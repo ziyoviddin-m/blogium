@@ -1,17 +1,16 @@
 from django.conf import settings
-from django.views.generic import ListView
-from django.shortcuts import render, get_object_or_404
-from .models import Post
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import *
+from django.contrib.postgres.search import (SearchQuery, SearchRank,
+                                            SearchVector, TrigramSimilarity)
 from django.core.mail import send_mail
-from django.views.decorators.http import require_POST
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
-from django.contrib.postgres.search import TrigramSimilarity
-
-
-from taggit.models import Tag
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Count
+from django.shortcuts import get_object_or_404, render
+from django.views.decorators.http import require_POST
+from django.views.generic import ListView
+from taggit.models import Tag
+
+from .forms import *
+from .models import Post
 
 
 def post_list(request, tag_slug=None):
@@ -119,7 +118,6 @@ def post_comment(request, post_id):
     }
     return render(request, 'blog/post/comment.html', context)
         
-
 
 def post_search(request):
     form = SeachForm()
